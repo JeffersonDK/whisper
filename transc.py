@@ -2,6 +2,7 @@ import streamlit as st
 import whisper
 import os
 import tempfile
+import google.generativeai as genai
 
 # Configuração da página do Streamlit
 st.title("Transcrição de Áudio com Whisper")
@@ -18,6 +19,16 @@ def load_whisper_model():
     return whisper.load_model("base")
 
 model = load_whisper_model()
+
+# Configurar a chave de API
+#gemini_key = user.secrets.get_secret("AIzaSyCDsvN4QtsDE2Bi1grncPEwDIAY96e4sCE")
+genai.configure(api_key="AIzaSyCDsvN4QtsDE2Bi1grncPEwDIAY96e4sCE")
+
+# Configurar o modelo com instruções do Gem
+model1 = genai.GenerativeModel(
+    model_name='gemini-2.0-flash',
+    system_instruction="Voce é um professor de ingles.Responda primeiramente em ingles e em outra linha a tradução da resposta."
+)
 
 # Captura de áudio
 audio_value = st.audio_input("Grave um áudio para transcrever")
@@ -42,6 +53,13 @@ if audio_value:
 
         # Remover o arquivo temporário
         os.unlink(temp_audio_path)
+        
+        # Iniciar uma sessão de chat
+        chat = model1.start_chat(history=[])
+
+        # Enviar uma mensagem
+        response = chat.send_message(transcription)
+        st.write(response.text)
 
     except Exception as e:
         st.error(f"Erro ao transcrever o áudio: {str(e)}")
