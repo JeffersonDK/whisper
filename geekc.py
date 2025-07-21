@@ -28,5 +28,5 @@ async def main():
     #user_text = input("Digite o texto para converter em fala: ")
     #await text_to_speech(user_text)
 
-if __name__ == "__main__":
-    asyncio.run(main())
+#if __name__ == "__main__":
+#    asyncio.run(main())
