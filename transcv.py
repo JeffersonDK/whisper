@@ -86,8 +86,9 @@ if audio_value:
         resposta = response.text
 
         # Chamar a função text_to_speech do módulo geek
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(text_to_speech(resposta))
+        #loop = asyncio.get_event_loop()
+        #loop.run_until_complete(text_to_speech(resposta))
+        await text_to_speech(resposta)
 
     except Exception as e:
         st.error(f"Erro ao processar o áudio ou reproduzir a fala: {str(e)}")
