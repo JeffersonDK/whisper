@@ -4,7 +4,8 @@ import os
 import tempfile
 import google.generativeai as genai
 import asyncio
-from text_to_speech import _text_to_speech
+#from text_to_speech import _text_to_speech
+from app44 import _text_to_speech
 
 # Configuração da página do Streamlit
 st.title("Transcrição de Áudio com Whisper")
