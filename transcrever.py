@@ -60,6 +60,7 @@ if audio_value:
         chat = model1.start_chat(history=[])
 
         # Enviar uma mensagem
+        envio =""
         response = chat.send_message(transcription)
         envio = response.text
         st.write(response.text)
@@ -69,7 +70,8 @@ if audio_value:
         user_text = envio
 
         # Button to submit text from text_area
-        if st.button("Convert to Speech", key="convert_button"):
+        #if st.button("Convert to Speech", key="convert_button"):
+        if envio:
             if user_text.strip():
                 # Call the async _text_to_speech function
                 audio_buffer = asyncio.run(_text_to_speech(user_text))
