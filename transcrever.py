@@ -12,7 +12,7 @@ st.title("Agente I.A. para pesquisa via Áudio")
 st.write("Grave um áudio usando o microfone.")
 
 # Caixa de seleção para idioma
-language_options = {"Português": "pt", "Inglês": "en"}
+#language_options = {"Português": "pt", "Inglês": "en"}
 #selected_language = st.selectbox("Selecione o idioma da transcrição:", list(language_options.keys()))
 #language_code = language_options[selected_language]
 language_code = "pt"
@@ -30,7 +30,7 @@ genai.configure(api_key="AIzaSyCDsvN4QtsDE2Bi1grncPEwDIAY96e4sCE")
 # Configurar o modelo com instruções do Gem
 model1 = genai.GenerativeModel(
     model_name='gemini-2.0-flash',
-    system_instruction="-comporte-se como um assistente para pesquisar o que for perguntado.cumprimente a pessoa  pelo nome , se ela disser o nome e pergunte em que pode ajudar mas somente na apresentação inicial ou se não entender a pergunta. -Não gere asterisco na resposta em forma de lista nem  nenhum outro caractere, separe os itens com ponto-e-virgula ao final.Preferencia: os itens ficam numa mesma linha. "
+    system_instruction="-comporte-se como um assistente para pesquisar o que for perguntado.Primeiramente cumprimente a pessoa  pelo nome , se ela disser o nome; em seguida pergunte em que pode ajudar mas somente na apresentação inicial ou se não entender a pergunta.Ao final da resposta : em outra linha, pergunte se a pessoa tem mais alguma pergunta -Não gere asterisco na resposta em forma de lista nem  nenhum outro caractere tipo hifen, separe os itens com ponto-e-virgula ao final.Preferencia: os itens ficam numa mesma linha. "
 )
 
 # Captura de áudio
