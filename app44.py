@@ -20,20 +20,20 @@ async def text_to_speech(text):
         return None
 
 # Streamlit app
-st.title("Text to Speech")
-st.write("Enter the text to convert to speech using the pt-BR-AntonioNeural voice, then click the button to generate and play the audio.")
+#st.title("Text to Speech")
+#st.write("Enter the text to convert to speech using the pt-BR-AntonioNeural voice, then click the button to generate and play the audio.")
 
 # Text input
-user_text = st.text_area("Text to convert:", height=150)
+#user_text = st.text_area("Text to convert:", height=150)
 
 # Explicitly render button
-convert_button = st.button("Convert and Play", key="convert_button")
+#convert_button = st.button("Convert and Play", key="convert_button")
 
 # Debug: Confirm button is rendered
-st.write("Debug: Button should be visible above this line.")
+#st.write("Debug: Button should be visible above this line.")
 
 # Handle button click
-if convert_button:
+if user_text:
     if user_text.strip():
         audio_buffer = asyncio.run(text_to_speech(user_text))
         if audio_buffer:
