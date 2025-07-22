@@ -5,7 +5,7 @@ import tempfile
 import google.generativeai as genai
 import asyncio
 #from text_to_speech import _text_to_speech
-from app44 import _text_to_speech
+from app44 import text_to_speech
 
 # Configuração da página do Streamlit
 st.title("Transcrição de Áudio com Whisper")
@@ -74,8 +74,8 @@ if audio_value:
         #if st.button("Convert to Speech", key="convert_button"):
         if envio:
             if user_text.strip():
-                # Call the async _text_to_speech function
-                audio_buffer = asyncio.run(_text_to_speech(user_text))
+                # Call the async text_to_speech function
+                audio_buffer = asyncio.run(text_to_speech(user_text))
                 if audio_buffer:
                     # Display the audio widget
                     st.audio(audio_buffer, format="audio/mp3")
