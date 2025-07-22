@@ -29,7 +29,7 @@ genai.configure(api_key="AIzaSyCDsvN4QtsDE2Bi1grncPEwDIAY96e4sCE")
 # Configurar o modelo com instruções do Gem
 model1 = genai.GenerativeModel(
     model_name='gemini-2.0-flash',
-    system_instruction="Voce é um agente que pesquisa e responde o que for perguntado. primeiramente, pergunte em que pode ajudar.Caso a pessoa diga o nome dela, cumprimente-a pelo nome"
+    system_instruction="primeiramente, pergunte em que pode ajudar.Caso a pessoa diga o nome dela, cumprimente-a pelo nome -comporte-se como um assistente e pesquise o que for perguntado."
 )
 
 # Captura de áudio
