@@ -1,9 +1,13 @@
 import streamlit as st
-import whisper
 import os
 import tempfile
 import google.generativeai as genai
 import asyncio
+import speech_recognition as sr
+import io
+import soundfile as sf
+import numpy as np
+
 #from text_to_speech import _text_to_speech
 from app44 import text_to_speech
 
@@ -11,18 +15,63 @@ from app44 import text_to_speech
 st.title("Agente I.A. para pesquisa via Áudio")
 st.write("Grave um áudio usando o microfone.")
 
-# Caixa de seleção para idioma
-#language_options = {"Português": "pt", "Inglês": "en"}
-#selected_language = st.selectbox("Selecione o idioma da transcrição:", list(language_options.keys()))
-#language_code = language_options[selected_language]
-language_code = "pt"
-# Inicializar o modelo Whisper (base)
-@st.cache_resource
-def load_whisper_model():
-    return whisper.load_model("base")
+# Caixa para entrada de Gravação
 
-model = load_whisper_model()
+# Inicializa o reconhecedor
+recognizer = sr.Recognizer()
 
+# Estado da sessão para controlar a transcrição
+if 'transcribed_text' not in st.session_state:
+    st.session_state.transcribed_text = ""
+
+# Função para converter áudio do st.audio_input para formato compatível com speech_recognition
+def process_audio(audio_data):
+    try:
+        # Lê o áudio do BytesIO
+        audio_file = io.BytesIO(audio_data)
+        with sf.SoundFile(audio_file, 'r') as f:
+            audio_array = f.read(dtype='int16')
+            sample_rate = f.samplerate
+        
+        # Converte o áudio para o formato WAV exigido por speech_recognition
+        wav_io = io.BytesIO()
+        sf.write(wav_io, audio_array, sample_rate, format='WAV')
+        wav_io.seek(0)
+        
+        # Cria um AudioFile para speech_recognition
+        with sr.AudioFile(wav_io) as source:
+            audio = recognizer.record(source)
+        
+        # Transcreve o áudio usando Google Speech Recognition
+        text = recognizer.recognize_google(audio, language="pt-BR")
+        st.session_state.transcribed_text = text
+        st.success(f"Texto transcrito: {text}")
+    except sr.UnknownValueError:
+        st.error("Não foi possível entender o áudio.")
+        st.session_state.transcribed_text = ""
+    except sr.RequestError as e:
+        st.error(f"Erro ao conectar com a API: {str(e)}")
+        st.session_state.transcribed_text = ""
+    except Exception as e:
+        st.error(f"Erro ao processar o áudio: {str(e)}")
+        st.session_state.transcribed_text = ""
+
+# Interface do Streamlit
+
+# Widget de entrada de áudio
+audio_value = st.audio_input("Grave ou envie um áudio", key="audio_input")
+
+# Processa o áudio quando um arquivo é carregado
+if audio_value:
+    st.info("Processando o áudio...")
+    process_audio(audio_value.getvalue())
+
+# Exibe o texto transcrito
+if st.session_state.transcribed_text:
+    st.write("**Texto Transcrito:**")
+    st.write(st.session_state.transcribed_text)
+
+#----------
 # Configurar a chave de API
 #gemini_key = user.secrets.get_secret("AIzaSyCDsvN4QtsDE2Bi1grncPEwDIAY96e4sCE")
 genai.configure(api_key="AIzaSyCDsvN4QtsDE2Bi1grncPEwDIAY96e4sCE")
@@ -38,24 +87,15 @@ audio_value = st.audio_input("Clique e envie uma pergunta via áudio")
 
 if audio_value:
     try:
-        # Criar um arquivo temporário para salvar o áudio
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio:
-            temp_audio.write(audio_value.getvalue())
-            temp_audio_path = temp_audio.name
-
-        # Exibir mensagem de processamento
-        st.write("Processando o áudio...")
-
-        # Transcrever o áudio com o idioma selecionado
-        result = model.transcribe(temp_audio_path, language=language_code)
-        transcription = result["text"]
+        
+        transcription = st.session_state.transcribed_text
 
         # Exibir a transcrição
         st.subheader("Transcrição:")
         st.write(transcription)
 
         # Remover o arquivo temporário
-        os.unlink(temp_audio_path)
+        #os.unlink(temp_audio_path)
         
         # Iniciar uma sessão de chat
         chat = model1.start_chat(history=[])
