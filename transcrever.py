@@ -83,7 +83,7 @@ model1 = genai.GenerativeModel(
 )
 
 # Captura de áudio
-audio_value = st.audio_input("Clique e envie uma pergunta via áudio")
+#audio_value = st.audio_input("Clique e envie uma pergunta via áudio")
 
 if audio_value:
     try:
