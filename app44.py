@@ -8,7 +8,7 @@ from streamlit.components.v1 import html
 async def text_to_speech(text):
     """Converts text to speech using edge_tts and returns audio bytes."""
     try:
-        tts = edge_tts.Communicate(text, "en-AU-WilliamNeural")
+        tts = edge_tts.Communicate(text, "en-HK-SamNeural")
         audio_buffer = io.BytesIO()
         async for chunk in tts.stream():
             if chunk["type"] == "audio":
