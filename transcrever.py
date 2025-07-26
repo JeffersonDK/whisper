@@ -43,7 +43,7 @@ def process_audio(audio_data):
             audio = recognizer.record(source)
         
         # Transcreve o áudio usando Google Speech Recognition
-        text = recognizer.recognize_google(audio, language="en-AU")
+        text = recognizer.recognize_google(audio, language="en-HK")
         st.session_state.transcribed_text = text
         st.success(f"Texto transcrito: {text}")
     except sr.UnknownValueError:
