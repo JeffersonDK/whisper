@@ -43,7 +43,7 @@ def process_audio(audio_data):
             audio = recognizer.record(source)
         
         # Transcreve o áudio usando Google Speech Recognition
-        text = recognizer.recognize_google(audio, language="pt-BR")
+        text = recognizer.recognize_google(audio, language="en-AU")
         st.session_state.transcribed_text = text
         st.success(f"Texto transcrito: {text}")
     except sr.UnknownValueError:
@@ -79,7 +79,7 @@ genai.configure(api_key="AIzaSyCDsvN4QtsDE2Bi1grncPEwDIAY96e4sCE")
 # Configurar o modelo com instruções do Gem
 model1 = genai.GenerativeModel(
     model_name='gemini-2.0-flash',
-    system_instruction="-comporte-se como um assistente para pesquisar o que for perguntado.Caso a pessoa diga seu nome, cumprimente-a pelo nome , se ela disser o nome;em seguida pergunte em que pode ajudar mas somente a primeira vez. Após dar a resposta : pergunte se a pessoa tem mais alguma pergunta.Caso não entenda a pergunta : peça para a pessoa reformular a pergunta. -Não gere asterisco na resposta em forma de lista nem  nenhum outro caractere tipo hifen, separe os itens com ponto-e-virgula ao final.Preferencia: os itens ficam numa mesma linha. "
+    system_instruction="-comporte-se como um assistente para pesquisar o que for perguntado.A linguagem usada é ingles,responda em ingles.Caso a pessoa diga seu nome, cumprimente-a pelo nome , se ela disser o nome;em seguida pergunte em que pode ajudar mas somente a primeira vez. Após dar a resposta : pergunte se a pessoa tem mais alguma pergunta.Caso não entenda a pergunta : peça para a pessoa reformular a pergunta. -Não gere asterisco na resposta em forma de lista nem  nenhum outro caractere tipo hifen, separe os itens com ponto-e-virgula ao final.Preferencia: os itens ficam numa mesma linha. "
 )
 
 # Captura de áudio
